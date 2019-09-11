@@ -1,0 +1,1 @@
+docker run -v $HOME/Git/GraduationResearch/node:$HOME/Git/GraduationResearch/node -v /usr/local/bin/docker:/usr/local/bin/docker -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -w $HOME/Git/GraduationResearch/node -p 3000:3000 --rm -i -t node /bin/bash

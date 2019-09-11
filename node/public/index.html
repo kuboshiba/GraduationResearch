@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<!--
+    Author: H.Kubota
+    Last updated: 2019/09/10
+    Email: r115313@g.kobe-kosen.ac.jp
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <title>HOME</title>
+
+    <!-- Bootstrap CDN StyleSheet -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <!-- Main StyleSheet -->
+    <link rel="stylesheet" href="css/index.css">
+
+    <!-- Google Fonts CDN -->
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu&display=swap" rel="stylesheet">
+    <!-- font-family: 'Ubuntu', sans-serif; -->
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+</head>
+
+<body style="font-family: 'Ubuntu', sans-serif; background-color: white">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        File
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_fileopen">Open</a>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" onClick="saveCode();">Save on Blowser</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" id="export" onClick="ExportFile();">Export</button>
+                    </div>
+                </li>
+                <li class="nav-item active ml-2">
+                    <a class="nav-link" href="#setting" data-toggle="modal" data-target="#modal_setting">⚙ Setting</a>
+                </li>
+                <li class="nav-item active ml-2">
+                    <button id="run_button" class="btn btn-success">▶ Run (Ctrl+Enter)</button>
+                </li>
+                <li class="nav-item active ml-2">
+                    <button id="run_button" class="btn btn-outline-info" onClick="testButton();">TEST</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <pre id="source_code"></pre>
+
+
+    <div id="bottom_pane" style="display: flex;">
+        <div id="linux_terminal">
+            <div id="linux_terminal_menu">
+                <div id="cercle_red"></div>
+                <div id="cercle_yellow"></div>
+                <div id="cercle_blue"></div>
+                <span style="position: relative; left: 35%;">STDOUT</span>
+            </div>
+            <div id="linux_terminal_body" style="font-family: 'Ubuntu', sans-serif;">
+                <span style="color: #32cd32;"> GestUser@Kubo_PC :~ $ <span id="terminal_command"
+                        style="color: white;"></span></span>
+                <pre><div id="stdout" style="color: white;"></div></pre>
+                <pre><div id="stderr" style="color: red;"></div></pre>
+            </div>
+        </div>
+        <div id="status_pane" class="card text-white bg-dark mb-1">
+            <h5 class="card-header">Info</h5>
+            <div class="card-body">
+                <div style="display: flex;">
+                    <b class="card-title">[Mode]&ensp; :</b>
+                    <div class="card-text ml-3">
+                        <select id="language" class="form-control form-control-sm">
+                            <option value="c">C</option>
+                            <option value="ruby">Ruby</option>
+                            <option value="python">Python3</option>
+                        </select>
+                    </div>
+                </div><br>
+                <div style="display: flex;">
+                    <b class="card-title">[Time]&ensp; :</b>
+                    <div class="card-text ml-3">
+                        <div id="time"></div>
+                    </div>
+                </div><br>
+                <div style="display: flex;">
+                    <b class="card-title">[Exit Code]&ensp; :</b>
+                    <div class="card-text ml-3">
+                        <div id="exit_code"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="stdin_pane" class="card bg-light mb-1">
+            <h5 class="card-header">Stdin</h5>
+            <div class="card-body">
+                <h5 class="card-title">Please input stdin...</h5>
+                <p class="card-text">
+                    <textarea id="input" style="width: 100%; height: 150px; resize: vertical;"></textarea>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for FileOpen -->
+    <div class="modal fade" id="modal_fileopen" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">File Open</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="selfile">
+                        <label class="custom-file-label" for="selfile">Choose file</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Setting -->
+    <div class="modal fade" id="modal_setting" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Setting</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="font-size">Font-Size ( px )</label>
+                        <input type="text" class="form-control" id="font-size" placeholder="Font-Size"
+                            onChange="ChangeFontSize(this.value);">
+                        <small class="form-text text-muted">Default: 25px</small>
+                    </div>
+                    <!-- <div class="form-group">
+                        <label for="font-size">Tab-Size</label>
+                        <input type="text" class="form-control" id="tab-size" placeholder="Tab-Size"
+                            onChange="ChangeTabSize(this.value);">
+                        <small class="form-text text-muted">Default: 4</small>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="editor_theme">Theme</label>
+                        <select id="editor_theme" onChange="ChangeTheme(this.value);">
+                            <option value="dracula">Default</option>
+                            <option value="ambiance">Ambiance</option>
+                            <option value="chaos">Chaos</option>
+                            <option value="chrome">Chrome</option>
+                            <option value="clouds">Clouds</option>
+                            <option value="clouds_midnight">Clouds Midnight</option>
+                            <option value="cobalt">Cobalt</option>
+                            <option value="crimson_editor">Crimson Editor</option>
+                            <option value="dawn">Dawn</option>
+                            <option value="dracula">Dracula</option>
+                            <option value="dreamweaver">Dreamweaver</option>
+                            <option value="eclipse">Eclipse</option>
+                            <option value="github">GitHub</option>
+                            <option value="gob">Gob</option>
+                            <option value="gruvbox">Gruvbox</option>
+                            <option value="idle_fingers">Idle Fingers</option>
+                            <option value="iplastic">Iplastic</option>
+                            <option value="katzenmilch">Katzenmilch</option>
+                            <option value="kr_theme">Kr Theme</option>
+                            <option value="kuroir">Kuroir</option>
+                            <option value="merbivore">Merbivore</option>
+                            <option value="merbivore_soft">Merbivore Soft</option>
+                            <option value="mono_industrial">Mono Industrial</option>
+                            <option value="monokai">Monokai</option>
+                            <option value="pastel_on_dark">Pastel on Dark</option>
+                            <option value="solarized_dark">Solarized Dark</option>
+                            <option value="solarized_light">Solarized Light</option>
+                            <option value="sqlserver">SqlServer</option>
+                            <option value="terminal">Terminal</option>
+                            <option value="textmate">Textmate</option>
+                            <option value="tomorrow">Tomorrow</option>
+                            <option value="tomorrow_night">Tomorrow Night</option>
+                            <option value="tomorrow_night_blue">Tomorrow Night Blue</option>
+                            <option value="tomorrow_night_bright">Tomorrow Night Bright</option>
+                            <option value="tomorrow_night_eighties">Tomorrow Night Eighties</option>
+                            <option value="twilight">Twilight</option>
+                            <option value="vibrant_ink">Vibrant Ink</option>
+                            <option value="xcode">Xcode</option>
+                        </select>
+                        <small class="form-text text-muted">Default: Dracula</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onClick="$('#modal_setting').modal('toggle');">Save
+                        changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Export -->
+    <div class="modal fade" id="modal_export" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Export</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <a id="download" target="_blank">ダウンロード（IEでは、右クリック＞対象をファイルに保存）</a>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jquery CDN JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+    <!-- ACE Editor CDN JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ace.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.5/ext-language_tools.js"></script>
+
+    <!-- Bootstrap CDN JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script src="js/run.js"></script> <!-- Ajax related -->
+    <script src="js/ui.js"></script> <!-- UI related -->
+
+</body>
+
+</html>
