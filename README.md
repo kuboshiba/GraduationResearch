@@ -13,3 +13,17 @@ $ npm --version
 $ node --version
 v8.10.0
 </pre>
+
+## Setup
+<pre>
+$ cd ~/ && mkdir Git && cd Git
+$ git clone https://github.com/kuboshiba/GraduationResearch.git && cd GraduationReserch
+$ cd image-ubuntu-dev
+$ docker build -t ubuntu-dev .
+$ cd ../node
+$ docker run -v $HOME/Git/GraduationResearch/node:$HOME/Git/GraduationResearch/node -v /usr/local/bin/docker:/usr/local/bin/docker -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -w $HOME/Git/GraduationResearch/node -p 3000:3000 --rm -i -t node /bin/bash
+
+root@docker-hostname $ node app.js
+</pre>
+
+ブラウザで http://localhost:3000 にアクセスしてください
