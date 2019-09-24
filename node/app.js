@@ -85,15 +85,22 @@ app.post('/api/run', function (req, res) {
 });
 
 app.post('/api/gdb', function (req, res) {
-    const exec = require('child_process').exec;
-    exec('gcc --version', (err, stdout, stderr) => {
-        if (err) {
-            console.log(err);
-        }
-        console.log(stdout);
+    var cp = require('child_process');
+    var childProcess = cp.spawn('python', ['-i']);
+
+    childProcess.stdout.setEncoding('utf8')
+
+    childProcess.stdout.on("data", function (data) {
+        console.log(data);
     });
+    childProcess.stdin.write('a = 100\n');
+    childProcess.stdin.write('a = a * 2\n');
+    childProcess.stdin.write('a\n');
+    childProcess.stdin.end();
+
+    var source_code = req.body.source_code;
     res.send({
-        test: "test"
+        source_code: source_code
     });
 });
 

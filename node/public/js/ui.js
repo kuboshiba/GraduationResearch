@@ -155,14 +155,15 @@ aceEditor.setValue(code, 0);
 // }]);
 
 function testButton() {
+    var source_code = aceEditor.getValue();
     $.ajax({
         url: "/api/gdb",
         method: "POST",
         data: {
-            post_data: "POST FROM UI.JS"
+            source_code: source_code
         },
     }).done(function (result) {
-        console.log(result.test);
+        console.log(result.source_code);
     }).fail(function (error) {
 
     });
