@@ -87,7 +87,6 @@ app.post('/api/run', function (req, res) {
 app.post('/api/gdb', function (req, res) {
     var cp = require('child_process');
     var source_code = req.body.source_code;
-
     fs.writeFileSync("main.c", source_code);
     cp.exec("cat test.c", {}, function (error, stdout, stderr) {
         console.log(stdout);
@@ -97,29 +96,44 @@ app.post('/api/gdb', function (req, res) {
             console.log(error);
         }
     });
+
     var result = "";
+    var flag = 0;
+
     var childProcess = cp.spawn('gdb', ['./a.out']);
     childProcess.stdout.setEncoding('utf8')
+
     childProcess.stdout.on("data", function (data) {
         console.log(data);
-        result = result + data;
-        if (data[0] == '_') {
+        result = result + data + "@@NEWLINE@@";
+
+        if (data[0] == '_' && flag == 0) {
             res.send({
                 result: result
             });
-            childProcess.stdin.end();
+            flag = 1;
         }
     });
+
+    childProcess.stdout.on('error', function (err) {
+        console.error(err);
+        process.exit(1);
+    });
+
+    childProcess.stdin.on('error', function (err) {
+        console.error(err);
+        process.exit(1);
+    });
+
     childProcess.stdin.write('break main\n');
     childProcess.stdin.write('run\n');
+
     var n = 0;
-    while (n <= 50) {
+    while (n <= 1000) {
         childProcess.stdin.write('step\n');
         n++;
     }
-
     childProcess.stdin.end();
-
 });
 
 app.listen(3000, function () {
