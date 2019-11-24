@@ -104,7 +104,10 @@ app.post('/api/gdb', function (req, res) {
     childProcess.stdout.setEncoding('utf8')
 
     childProcess.stdout.on("data", function (data) {
-        console.log(data);
+        if (flag == 0) {
+            console.log(data);
+        }
+
         result = result + data + "@@NEWLINE@@";
 
         if (data[0] == '_' && flag == 0) {
