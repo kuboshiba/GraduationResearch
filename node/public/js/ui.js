@@ -157,14 +157,16 @@ aceEditor.setValue(code, 0);
 function testButton() {
     var source_code = aceEditor.getValue();
     $.ajax({
-        url: "/api/gdb",
-        method: "POST",
+        async: false,
+        url: '/api/gdb',
+        type: 'post',
         data: {
             source_code: source_code
         },
-    }).done(function (result) {
-        console.log(result.source_code);
-    }).fail(function (error) {
-
+        dataType: 'json'
+    }).done(function (res) {
+        console.debug(res);
+    }).fail(function (xhr, status, error) {
+        alert(status);
     });
 }
