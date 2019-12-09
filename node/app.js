@@ -97,24 +97,25 @@ app.post('/api/gdb', function (req, res) {
         }
     });
 
+    var cnt = 0;
     var result = "";
-    var flag = 0;
+    var flag = false;
 
     var childProcess = cp.spawn('gdb', ['./a.out']);
     childProcess.stdout.setEncoding('utf8')
 
     childProcess.stdout.on("data", function (data) {
-        if (flag == 0) {
-            console.log(data);
-        }
+        if (flag == false) console.log(data);
 
-        result = result + data + "@@NEWLINE@@";
+        if (cnt > 3) result = result + data + '\n';
 
-        if (data[0] == '_' && flag == 0) {
-            res.send({
-                result: result
-            });
-            flag = 1;
+        cnt++;
+
+        if (data[0] == '_' && flag == false) {
+            var obj = {};
+            var rejson = JSON.stringify(result);
+            res.send(rejson);
+            flag = true;
         }
     });
 
@@ -128,13 +129,14 @@ app.post('/api/gdb', function (req, res) {
         process.exit(1);
     });
 
+    var n = 0;
     childProcess.stdin.write('break main\n');
     childProcess.stdin.write('run\n');
 
-    var n = 0;
     while (n <= 1000) {
-        childProcess.stdin.write('step\n');
         n++;
+        childProcess.stdin.write('step\n');
+        childProcess.stdin.write('info locals\n');
     }
     childProcess.stdin.end();
 });
