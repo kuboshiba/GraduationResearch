@@ -14,7 +14,7 @@ $ node --version
 v8.10.0
 </pre>
 
-## Install Docker ( for Ubuntu18.04 )
+## Install Docker for Ubuntu18.04
 <pre>
 $ sudo apt update
 $ sudo apt install -y \
