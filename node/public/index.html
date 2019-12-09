@@ -47,37 +47,31 @@
                     </div>
                 </li>
                 <li class="nav-item active ml-2">
-                    <a class="nav-link" href="#setting" data-toggle="modal" data-target="#modal_setting">⚙ Setting</a>
+                    <a class="nav-link" href="#setting" data-toggle="modal" data-target="#modal_setting">⚙
+                        Setting</a>
                 </li>
                 <li class="nav-item active ml-2">
                     <button id="run_button" class="btn btn-success">▶ Run (Ctrl+Enter)</button>
                 </li>
                 <li class="nav-item active ml-2">
-                    <button id="run_button" class="btn btn-outline-info" onClick="testButton();">TEST</button>
+                    <button id="run_button" class="btn btn-info" onClick="testButton();">🐞 Debug</button>
                 </li>
             </ul>
         </div>
     </nav>
 
 
-    <pre id="source_code"></pre>
-
-
-    <div id="bottom_pane" style="display: flex;">
-        <div id="linux_terminal">
-            <div id="linux_terminal_menu">
-                <div id="cercle_red"></div>
-                <div id="cercle_yellow"></div>
-                <div id="cercle_blue"></div>
-                <span style="position: relative; left: 35%;">STDOUT</span>
-            </div>
-            <div id="linux_terminal_body" style="font-family: 'Ubuntu', sans-serif;">
-                <span style="color: #32cd32;"> GestUser@Kubo_PC :~ $ <span id="terminal_command"
-                        style="color: white;"></span></span>
+    <div class="main_pane">
+        <div class="left_pane">
+            <pre id="source_code"></pre>
+            <div class="terminal">
+                <span style="color: #32cd32;"> GestUser@Docker_PC :~ <span style="color:white;">$</span> <span
+                        id="terminal_command" style="color: white;"></span></span>
                 <pre><div id="stdout" style="color: white;"></div></pre>
                 <pre><div id="stderr" style="color: red;"></div></pre>
             </div>
         </div>
+        <div class="right_pane"></div>
     </div>
 
     <!-- Modal for FileOpen -->
