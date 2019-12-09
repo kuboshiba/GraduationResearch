@@ -45,7 +45,7 @@ function runCode() {
         $("#stderr").text(result.stderr);
         $("#time").text(result.time + ' s');
         $("#exit_code").text(result.exit_code);
-        $("#run_button").text("Run (Ctrl+Enter)").prop("disabled", false);
+        $("#run_button").text("▶ Run (Ctrl+Enter)").prop("disabled", false);
         if (result.stderr == '') {
             toastr["success"]("Successfully compiled", "Success");
         } else {
