@@ -114,8 +114,6 @@ function ChangeTheme(theme) {
     aceEditor.setTheme("ace/theme/" + theme);
 }
 
-var height = $('body').height();
-$('#linux_terminal').css('height', String(height - 10 - parseInt($("#linux_terminal").position().top)) + "px");
 
 function ExportFile() {
     var id = "download";
@@ -165,7 +163,7 @@ function testButton() {
         },
         dataType: 'json'
     }).done(function (res) {
-        console.debug(res);
+        console.log(res);
     }).fail(function (xhr, status, error) {
         alert(status);
     });
