@@ -6,8 +6,41 @@ body {
     padding: 0;
 }
 
-#source_code {
+.main_pane {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.left_pane {
+    height: 100%;
     width: 50%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.right_pane {
+    height: 95%;
+    width: 50%;
+    background-color: gray;
+}
+
+.terminal {
+    height: 35%;
+    width: 100%;
+    padding: 5px;
+    background-color: black;
+    color: white;
+    resize: both;
+    overflow: scroll;
+}
+
+#source_code {
+    width: 100%;
     height: 60%;
     font-size: 25px;
     resize: both;
@@ -16,68 +49,11 @@ body {
     padding: 0;
 }
 
-#linux_terminal {
-    margin-top: 5px;
-    margin-left: 5px;
-    background-color: #bdbdbd;
-    width: 50%;
-    border-radius: 0.5em;
-    border: solid 1px #bdbdbd;
-    resize: both;
-    overflow: scroll;
-}
-
-#linux_terminal_menu {
-    margin: 0;
-    padding-top: 0px;
-    background-color: #bdbdbd;
-    height: 25px;
-    width: auto;
-    border-radius: 0.5em;
-    display: flex;
-}
-
-#linux_terminal_body {
-    height: 90%;
-    width: auto;
-    background-color: black;
-    padding: 10px;
-    margin-left: 10px;
-    overflow-y: scroll;
-}
-
-#cercle_red {
-    margin-left: 15px;
-    margin-top: 5px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: red;
-}
-
-#cercle_yellow {
-    margin-left: 15px;
-    margin-top: 5px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: yellow;
-}
-
-#cercle_blue {
-    margin-left: 15px;
-    margin-top: 5px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: green;
-}
-
 #status_pane {
     margin-top: 5px;
     margin-left: 15px;
     background-color: white;
-    width: 17%;
+    width: 90%;
     border-radius: 1em;
     border: solid 1px gray;
 }
@@ -92,7 +68,7 @@ body {
     margin-top: 5px;
     margin-left: 15px;
     background-color: white;
-    width: 30%;
+    width: 90%;
     border-radius: 1em;
     border: solid 1px gray;
 }
