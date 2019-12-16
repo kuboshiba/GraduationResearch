@@ -92,7 +92,7 @@ app.post('/api/gdb', function (req, res) {
     cp.exec("cat test.c", {}, function (error, stdout, stderr) {
         console.log(stdout);
     });
-    cp.exec("gcc -g -O0 main.c", {}, function (error, stdout, stderr) {
+    cp.exec("gcc -g main.c", {}, function (error, stdout, stderr) {
         if (error != null) {
             console.log(error);
         }
@@ -108,12 +108,11 @@ app.post('/api/gdb', function (req, res) {
     childProcess.stdout.on("data", function (data) {
         if (flag == false) console.log(data);
 
-        if (cnt > 3) result = result + data + '\n';
+        if (cnt > 6) result = result + data;
 
         cnt++;
 
-        if (data[0] == '_' && flag == false) {
-            var obj = {};
+        if (data[0] == '[' && flag == false) {
             var rejson = JSON.stringify(result);
             res.send(rejson);
             flag = true;

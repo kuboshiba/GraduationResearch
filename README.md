@@ -42,8 +42,8 @@ $ git clone https://github.com/kuboshiba/GraduationResearch.git
 $ cd GraduationReserch
 $ cd image-ubuntu-dev
 $ docker build -t ubuntu-dev .
-$ cd ../image-node-dev
-$ docker build -t node-dev .
+$ cd ../image-centos-dev
+$ docker build -t centos-dev .
 $ cd ../node
 $ docker run -v $HOME/Git/GraduationResearch/node:$HOME/Git/GraduationResearch/node -v /usr/local/bin/docker:/usr/local/bin/docker -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -w $HOME/Git/GraduationResearch/node -p 3000:3000 --rm -i -t node-dev /bin/bash
 
