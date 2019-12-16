@@ -107,12 +107,9 @@ app.post('/api/gdb', function (req, res) {
 
     childProcess.stdout.on("data", function (data) {
         if (flag == false) console.log(data);
-
         if (cnt > 6) result = result + data;
-
         cnt++;
-
-        if (data[0] == '[' && flag == false) {
+        if (flag == false && (data.indexOf('Inferior') != -1)) {
             var rejson = JSON.stringify(result);
             res.send(rejson);
             flag = true;
@@ -139,6 +136,8 @@ app.post('/api/gdb', function (req, res) {
         childProcess.stdin.write('info locals\n');
     }
     childProcess.stdin.end();
+
+    if (flag == false) console.log("flag is false");
 });
 
 app.listen(3000, function () {

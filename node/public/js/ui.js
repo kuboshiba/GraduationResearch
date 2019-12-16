@@ -103,6 +103,7 @@ obj1.addEventListener("change", function (evt) {
 function ChangeFontSize(font_size) {
     $('#source_code').css('font-size', font_size + 'px');
 }
+ChangeFontSize(17);
 
 function ChangeTabSize(tab_size) {
     var code = aceEditor.getValue();
@@ -163,6 +164,7 @@ function testButton() {
         },
         dataType: 'json'
     }).done(function (res) {
+        console.log("DEBUG RESPONSE");
         console.log(res);
     }).fail(function (xhr, status, error) {
         alert(status);
