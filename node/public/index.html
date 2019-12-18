@@ -54,7 +54,7 @@
                     <button id="run_button" class="btn btn-success">▶ Run (Ctrl+Enter)</button>
                 </li>
                 <li class="nav-item active ml-2">
-                    <button id="run_button" class="btn btn-info" onClick="testButton();">🐞 Debug</button>
+                    <button id="db_button" class="btn btn-info" onClick="testButton();">🐞 Debug</button>
                 </li>
             </ul>
         </div>
@@ -71,7 +71,9 @@
                 <pre><div id="stderr" style="color: red;"></div></pre>
             </div>
         </div>
-        <div class="right_pane"></div>
+        <div class="right_pane">
+            <div id="db_result"></div>
+        </div>
     </div>
 
     <!-- Modal for FileOpen -->

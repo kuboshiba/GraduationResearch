@@ -107,8 +107,6 @@ ChangeFontSize(17);
 
 function ChangeTabSize(tab_size) {
     var code = aceEditor.getValue();
-
-    console.log("test\ttest");
 }
 
 function ChangeTheme(theme) {
@@ -154,6 +152,8 @@ aceEditor.setValue(code, 0);
 // }]);
 
 function testButton() {
+    var loading = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+    $("#db_button").html('Running ' + loading).prop("disabled", true);
     var source_code = aceEditor.getValue();
     $.ajax({
         async: false,
@@ -164,8 +164,17 @@ function testButton() {
         },
         dataType: 'json'
     }).done(function (res) {
-        console.log("DEBUG RESPONSE");
-        console.log(res);
+        $("#db_button").text("🐞 Debug").prop("disabled", false);
+        // console.log("DEBUG RESPONSE");
+        // console.log(res);
+
+        var res_new = res.replace(/\(gdb\)/g, '');
+        res_new = res_new.replace(/\r?\n/g, '<br>');
+        res_new = res_new.replace(/\r?\t/g, '@@@');
+        var res_array = res_new.split('<br>');
+        console.log(res_array);
+        $("#db_result").empty();
+        $('#db_result').append(res_array[1]);
     }).fail(function (xhr, status, error) {
         alert(status);
     });
