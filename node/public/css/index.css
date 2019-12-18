@@ -32,10 +32,11 @@ body {
 
 #db_result {
     height: 100%;
-    width: 100%;
+    width: auto;
     padding: 10px;
     background-color: #F5F5F5;
-    overflow: scroll;
+    white-space:nowrap;
+    overflow:scroll;
 }
 
 .terminal {

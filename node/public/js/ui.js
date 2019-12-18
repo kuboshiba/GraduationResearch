@@ -153,7 +153,7 @@ aceEditor.setValue(code, 0);
 
 function testButton() {
     var loading = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
-    $("#db_button").html('Running ' + loading).prop("disabled", true);
+    $("#db_button").html('Debuging ' + loading).prop("disabled", true);
     var source_code = aceEditor.getValue();
     $.ajax({
         async: false,
@@ -173,8 +173,39 @@ function testButton() {
         res_new = res_new.replace(/\r?\t/g, '@@@');
         var res_array = res_new.split('<br>');
         console.log(res_array);
+
         $("#db_result").empty();
-        $('#db_result').append(res_array[1]);
+        $('#db_result').append('<span style="color: red">' + res_array[1] + '</span><br><br>');
+        
+        $('#db_result').append('<div class=""><table class="table table-striped"><thead><tr><th>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id="abc"></tbody></table></div>');
+        
+        var flag = true;
+        var insert = "";
+        for (var i=2; i<res_array.length; i++) {
+            if (res_array[i].indexOf('@@@') != -1) {
+                var line = res_array[i].split('@@@');
+                insert = "<tr><td>" + line[0] + "</td><td>" + line[1] +"</td><td>";
+                if ((res_array[i+1].indexOf('@@@') == -1) && (res_array[i+1].match(/\s=\s/) != null)) {
+                    insert = insert + res_array[i+1];
+                    var now = i+2;
+                    while(flag == true) {
+                        if ((res_array[now].indexOf('@@@')) == -1 && (res_array[now].match(/\s=\s/) != null)) {
+                            insert = insert + "&emsp;&emsp;&emsp;" + res_array[now];
+                        } else {
+                            flag = false;
+                        }
+                        now++;
+                    }
+                    insert = insert + "</td></tr>";
+                    flag = true;
+                    $('#abc').append(insert);
+                } else {
+                    insert = insert + "</td></tr>";
+                    $('#abc').append(insert);
+                }
+            }
+        }
+
     }).fail(function (xhr, status, error) {
         alert(status);
     });
