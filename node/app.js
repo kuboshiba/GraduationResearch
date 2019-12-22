@@ -7,9 +7,7 @@ var cp = require('child_process');
 var fs = require('fs');
 
 app.use(express.static('public'));
-app.use(bodyParser.urlencoded({
-    extended: false
-}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.post('/api/run', function (req, res) {
     var language = req.body.language;
@@ -85,63 +83,78 @@ app.post('/api/run', function (req, res) {
     child.stdin.end();
 });
 
-app.post('/api/gdb', function (req, res) {
-    var source_code = req.body.source_code;
+// app.post('/api/gdb', function (req, res) {
+//     var source_code = req.body.source_code;
 
-    fs.writeFileSync("main.c", source_code);
-    cp.exec("cat test.c", {}, function (error, stdout, stderr) {
-        console.log(stdout);
+//     fs.writeFileSync("main.c", source_code);
+//     cp.exec("cat test.c", {}, function (error, stdout, stderr) {
+//         console.log(stdout);
+//     });
+//     cp.exec("gcc -g main.c", {}, function (error, stdout, stderr) {
+//         if (error != null) {
+//             console.log(error);
+//         }
+//     });
+
+//     var cnt = 0;
+//     var result = "";
+//     var flag = false;
+
+//     var childProcess = cp.spawn('gdb', ['./a.out']);
+//     childProcess.stdout.setEncoding('utf8');
+
+//     childProcess.stdout.on("data", function (data) {
+//         if (flag == false) console.log(data);
+//         if (cnt > 6) result = result + data;
+//         cnt++;
+//         if (flag == false && (data.indexOf('Inferior') != -1)) {
+//             var rejson = JSON.stringify(result);
+//             res.send(rejson);
+//             flag = true;
+//         }
+//     });
+
+//     childProcess.stdout.on('error', function (err) {
+//         console.error(err);
+//         process.exit(1);
+//     });
+
+//     childProcess.stdin.on('error', function (err) {
+//         console.error(err);
+//         process.exit(1);
+//     });
+
+//     var n = 0;
+//     childProcess.stdin.write('break main\n');
+//     childProcess.stdin.write('run\n');
+
+//     while (n <= 1000) {
+//         n++;
+//         childProcess.stdin.write('step\n');
+//         childProcess.stdin.write('info locals\n');
+//     }
+//     childProcess.stdin.end();
+
+//     if (flag == false) console.log("flag is false");
+// });
+
+var FileCount = 0;
+function CompileForGDB(source_code) {
+    var FileName = String(FileCount) + ".c";
+    fs.writeFileSync(FileName, source_code);
+    var cmd = "gcc -g -O0 -o " + String(FileCount) + " " + FileName;
+    FileCount++;
+    cp.exec(cmd, {}, function (error, stdout, stderr) {
+        if (error != null) console.log(error);
     });
-    cp.exec("gcc -g main.c", {}, function (error, stdout, stderr) {
-        if (error != null) {
-            console.log(error);
-        }
-    });
-
-    var cnt = 0;
-    var result = "";
-    var flag = false;
-
-    var childProcess = cp.spawn('gdb', ['./a.out']);
-    childProcess.stdout.setEncoding('utf8');
-
-    childProcess.stdout.on("data", function (data) {
-        if (flag == false) console.log(data);
-        if (cnt > 6) result = result + data;
-        cnt++;
-        if (flag == false && (data.indexOf('Inferior') != -1)) {
-            var rejson = JSON.stringify(result);
-            res.send(rejson);
-            flag = true;
-        }
-    });
-
-    childProcess.stdout.on('error', function (err) {
-        console.error(err);
-        process.exit(1);
-    });
-
-    childProcess.stdin.on('error', function (err) {
-        console.error(err);
-        process.exit(1);
-    });
-
-    var n = 0;
-    childProcess.stdin.write('break main\n');
-    childProcess.stdin.write('run\n');
-
-    while (n <= 1000) {
-        n++;
-        childProcess.stdin.write('step\n');
-        childProcess.stdin.write('info locals\n');
-    }
-    childProcess.stdin.end();
-
-    if (flag == false) console.log("flag is false");
-});
+}
 
 app.post('/api/debug', function (req, res) {
-    
+    var info_array = JSON.parse(req.body.array);
+    CompileForGDB(req.body.source_code);
+
+    var rejson = JSON.stringify("hello");
+    res.send(rejson);
 });
 
 app.listen(3000, function () {
