@@ -140,18 +140,22 @@ app.post('/api/run', function (req, res) {
 
 var FileCount = 0;
 function CompileForGDB(source_code) {
-    var FileName = String(FileCount) + ".c";
-    fs.writeFileSync(FileName, source_code);
-    var cmd = "gcc -g -O0 -o " + String(FileCount) + " " + FileName;
+    var cp = require('child_process');
+
+    var filename = String(FileCount) + ".c";
+    fs.writeFileSync(filename, source_code);
+
+    var cmd = "gcc -g -O0 -o " + String(FileCount) + " " + filename;
     FileCount++;
     cp.exec(cmd, {}, function (error, stdout, stderr) {
         if (error != null) console.log(error);
     });
+    return String(FileCount-1);
 }
 
 app.post('/api/debug', function (req, res) {
     var info_array = JSON.parse(req.body.array);
-    CompileForGDB(req.body.source_code);
+    var filenum = CompileForGDB(req.body.source_code);
 
     var rejson = JSON.stringify("hello");
     res.send(rejson);
