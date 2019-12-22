@@ -147,9 +147,7 @@ function CompileForGDB(source_code) {
 
     var cmd = "gcc -g -O0 -o " + String(FileCount) + " " + filename;
     FileCount++;
-    cp.exec(cmd, {}, function (error, stdout, stderr) {
-        if (error != null) console.log(error);
-    });
+    cp.exec(cmd, {}, function (error, stdout, stderr) { if (error != null) console.log(error); });
     return String(FileCount-1);
 }
 
@@ -157,6 +155,11 @@ app.post('/api/debug', function (req, res) {
     var info_array = JSON.parse(req.body.array);
     var filenum = CompileForGDB(req.body.source_code);
 
+    
+
+    var cmd = "python3 RemoveFile.py " + filenum;
+    cp.exec(cmd, {}, function (error, stdout, stderr) { console.log(stdout); });
+    
     var rejson = JSON.stringify("hello");
     res.send(rejson);
 });
