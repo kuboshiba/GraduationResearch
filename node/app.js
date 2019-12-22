@@ -3,6 +3,7 @@ var app = express();
 
 var bodyParser = require('body-parser');
 var child_process = require('child_process');
+var cp = require('child_process');
 var fs = require('fs');
 
 app.use(express.static('public'));
@@ -85,7 +86,6 @@ app.post('/api/run', function (req, res) {
 });
 
 app.post('/api/gdb', function (req, res) {
-    var cp = require('child_process');
     var source_code = req.body.source_code;
 
     fs.writeFileSync("main.c", source_code);
@@ -138,6 +138,10 @@ app.post('/api/gdb', function (req, res) {
     childProcess.stdin.end();
 
     if (flag == false) console.log("flag is false");
+});
+
+app.post('/api/debug', function (req, res) {
+    
 });
 
 app.listen(3000, function () {

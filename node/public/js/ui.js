@@ -113,7 +113,6 @@ function ChangeTheme(theme) {
     aceEditor.setTheme("ace/theme/" + theme);
 }
 
-
 function ExportFile() {
     var id = "download";
     var content = aceEditor.getValue();
