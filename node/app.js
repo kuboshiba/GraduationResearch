@@ -219,8 +219,14 @@ app.post('/api/debug', function (req, res) {
     cp.exec(dockerCmd, {}, function (error, stdout, stderr) {
         if (error != null) console.log(error);
         var rejson = JSON.stringify(stdout);
+        // Remove the container
+        dockerCmd = "docker rm " + containerId;
+        console.log("Running: " + dockerCmd);
+        child_process.execSync(dockerCmd);
         res.send(rejson);
     });
+
+
 });
 
 app.listen(3000, function () {

@@ -14,7 +14,6 @@ for (var i=4; i<4+argv_num; i++) {
     var str = process.argv[i].split(':');
     cmd.push("display *" + str[0] + "@" + str[1]);
 }
-console.log(cmd);
 
 var childProcess = cp.spawn('gdb', [filename]);
 childProcess.stdout.setEncoding('utf8');
@@ -24,8 +23,9 @@ childProcess.stdin.on('error', function (err) { console.error(err); process.exit
 var stdout = "";
 var cnt = 0;
 childProcess.stdout.on("data", function (data) {
-    if (cnt > 6) { console.log(data); stdout = stdout + data }
+    if (cnt > 6) { stdout = stdout + data }
     if (data.indexOf('Inferior') != -1) {
+        console.log(stdout);
         process.exit(0);
     }
     cnt++;
@@ -33,6 +33,10 @@ childProcess.stdout.on("data", function (data) {
 
 childProcess.stdin.write('break main\n');
 childProcess.stdin.write('run\n');
+
+for (var i=0; i<cmd.length; i++) {
+    childProcess.stdin.write(cmd[i] + '\n');
+}
 
 var n = 0;
 while(n < 10000) {
