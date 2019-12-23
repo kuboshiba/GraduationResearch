@@ -83,65 +83,63 @@ app.post('/api/run', function (req, res) {
     child.stdin.end();
 });
 
-// app.post('/api/gdb', function (req, res) {
-//     var source_code = req.body.source_code;
+app.post('/api/gdb', function (req, res) {
+    var source_code = req.body.source_code;
 
-//     fs.writeFileSync("main.c", source_code);
-//     cp.exec("cat test.c", {}, function (error, stdout, stderr) {
-//         console.log(stdout);
-//     });
-//     cp.exec("gcc -g main.c", {}, function (error, stdout, stderr) {
-//         if (error != null) {
-//             console.log(error);
-//         }
-//     });
+    fs.writeFileSync("main.c", source_code);
+    cp.exec("cat test.c", {}, function (error, stdout, stderr) {
+        console.log(stdout);
+    });
+    cp.exec("gcc -g main.c", {}, function (error, stdout, stderr) {
+        if (error != null) {
+            console.log(error);
+        }
+    });
 
-//     var cnt = 0;
-//     var result = "";
-//     var flag = false;
+    var cnt = 0;
+    var result = "";
+    var flag = false;
 
-//     var childProcess = cp.spawn('gdb', ['./a.out']);
-//     childProcess.stdout.setEncoding('utf8');
+    var childProcess = cp.spawn('gdb', ['./a.out']);
+    childProcess.stdout.setEncoding('utf8');
 
-//     childProcess.stdout.on("data", function (data) {
-//         if (flag == false) console.log(data);
-//         if (cnt > 6) result = result + data;
-//         cnt++;
-//         if (flag == false && (data.indexOf('Inferior') != -1)) {
-//             var rejson = JSON.stringify(result);
-//             res.send(rejson);
-//             flag = true;
-//         }
-//     });
+    childProcess.stdout.on("data", function (data) {
+        if (flag == false) console.log(data);
+        if (cnt > 6) result = result + data;
+        cnt++;
+        if (flag == false && (data.indexOf('Inferior') != -1)) {
+            var rejson = JSON.stringify(result);
+            res.send(rejson);
+            flag = true;
+        }
+    });
 
-//     childProcess.stdout.on('error', function (err) {
-//         console.error(err);
-//         process.exit(1);
-//     });
+    childProcess.stdout.on('error', function (err) {
+        console.error(err);
+        process.exit(1);
+    });
 
-//     childProcess.stdin.on('error', function (err) {
-//         console.error(err);
-//         process.exit(1);
-//     });
+    childProcess.stdin.on('error', function (err) {
+        console.error(err);
+        process.exit(1);
+    });
 
-//     var n = 0;
-//     childProcess.stdin.write('break main\n');
-//     childProcess.stdin.write('run\n');
+    var n = 0;
+    childProcess.stdin.write('break main\n');
+    childProcess.stdin.write('run\n');
 
-//     while (n <= 1000) {
-//         n++;
-//         childProcess.stdin.write('step\n');
-//         childProcess.stdin.write('info locals\n');
-//     }
-//     childProcess.stdin.end();
+    while (n <= 1000) {
+        n++;
+        childProcess.stdin.write('step\n');
+        childProcess.stdin.write('info locals\n');
+    }
+    childProcess.stdin.end();
 
-//     if (flag == false) console.log("flag is false");
-// });
+    if (flag == false) console.log("flag is false");
+});
 
 var FileCount = 0;
 function CompileForGDB(source_code) {
-    var cp = require('child_process');
-
     var filename = String(FileCount) + ".c";
     fs.writeFileSync(filename, source_code);
 
@@ -151,17 +149,78 @@ function CompileForGDB(source_code) {
     return String(FileCount-1);
 }
 
+// app.post('/api/debug', function (req, res) {
+//     var info_array = JSON.parse(req.body.array);
+//     var filenum = CompileForGDB(req.body.source_code);
+
+//     var childProcess = cp.spawn('gdb', [String(filenum)]);
+//     childProcess.stdout.setEncoding('utf8');
+//     childProcess.stdout.on('error', function (err) { console.error(err); process.exit(1); });
+//     childProcess.stdin.on('error', function (err) { console.error(err); process.exit(1); });
+
+//     var stdout = "";
+//     var cnt = 0;
+
+//     childProcess.stdout.on("data", function (data) {
+//         if (cnt > 6) { console.log(data); stdout = stdout + data }
+//         if (data.indexOf('Inferior') != -1) {
+//             var rejson = JSON.stringify(stdout);
+//             res.send(rejson);
+//             process.exit(0);
+//         }
+//         cnt++;
+//     });
+
+//     childProcess.stdin.write('break main\n');
+//     childProcess.stdin.write('run\n');
+
+//     var n = 0;
+//     while(n < 1000) {
+//         childProcess.stdin.write('step\n');
+//         childProcess.stdin.write('info locals\n');
+//         n++;
+//     }
+
+//     childProcess.stdin.write('q\n');
+//     childProcess.stdin.end();
+
+//     // var cmd = "python3 RemoveFile.py " + filenum;
+//     // cp.exec(cmd, {}, function (error, stdout, stderr) { console.log(stdout); });
+// });
+
 app.post('/api/debug', function (req, res) {
     var info_array = JSON.parse(req.body.array);
+    var cmd_array = "";
+    for (var i=0; i<info_array.length; i++) {
+        cmd_array = cmd_array + info_array[i].name + ":" + info_array[i].len + " ";
+    }
+    console.log(cmd_array);
     var filenum = CompileForGDB(req.body.source_code);
+    var execCmd = "node gdb.js " + String(filenum) + " " + String(info_array.length) + " " + cmd_array;
+
+    // Create a container
+    var dockerCmd =
+        'docker create -it ' + 
+        '-v /Users/kbt_hrk/Git/GraduationResearch/node:/Users/kbt_hrk/Git/GraduationResearch/node ' +
+        '-w /Users/kbt_hrk/Git/GraduationResearch/node ' +
+        'centos-dev ' + 
+        'su nobody -s /bin/bash -c "' +
+        execCmd +
+        '"';
 
     
+    console.log("\nRunning: " + dockerCmd);
+    var containerId = child_process.execSync(dockerCmd).toString().substr(0, 12);
+    console.log("ContainerId: " + containerId);
 
-    var cmd = "python3 RemoveFile.py " + filenum;
-    cp.exec(cmd, {}, function (error, stdout, stderr) { console.log(stdout); });
-    
-    var rejson = JSON.stringify("hello");
-    res.send(rejson);
+    dockerCmd = "docker start -i " + containerId;
+    console.log("Running: " + dockerCmd);
+
+    cp.exec(dockerCmd, {}, function (error, stdout, stderr) {
+        if (error != null) console.log(error);
+        var rejson = JSON.stringify(stdout);
+        res.send(rejson);
+    });
 });
 
 app.listen(3000, function () {

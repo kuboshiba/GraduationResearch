@@ -23,6 +23,8 @@ function debug() {
 
         var source_code = aceEditor.getValue();
 
+        var loading = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
+        $("#debug_button").html('Debugging ' + loading).prop("disabled", true);
         $.ajax({
             async: false,
             url: '/api/debug',
@@ -33,8 +35,10 @@ function debug() {
             },
             dataType: 'json'
         }).done(function (res) {
+            $("#debug_button").text("🐞 Debug").prop("disabled", false);
             console.log(res);
         }).fail(function (xhr, status, error) {
+            $("#debug_button").text("🐞 Debug").prop("disabled", false);
             alert(status);
         });
     }
