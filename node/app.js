@@ -208,11 +208,12 @@ app.post('/api/debug', function (req, res) {
         execCmd +
         '"';
 
-    
+    // Create container
     console.log("\nRunning: " + dockerCmd);
     var containerId = child_process.execSync(dockerCmd).toString().substr(0, 12);
     console.log("ContainerId: " + containerId);
 
+    // Start Docker
     dockerCmd = "docker start -i " + containerId;
     console.log("Running: " + dockerCmd);
 
@@ -223,6 +224,8 @@ app.post('/api/debug', function (req, res) {
         dockerCmd = "docker rm " + containerId;
         console.log("Running: " + dockerCmd);
         child_process.execSync(dockerCmd);
+        // Remove the C files
+        cp.exec("python3 RemoveFile.py " + String(filenum), {}, function (error, stdout, stderr) {});
         res.send(rejson);
     });
 
