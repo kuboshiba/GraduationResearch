@@ -149,45 +149,6 @@ function CompileForGDB(source_code) {
     return String(FileCount-1);
 }
 
-// app.post('/api/debug', function (req, res) {
-//     var info_array = JSON.parse(req.body.array);
-//     var filenum = CompileForGDB(req.body.source_code);
-
-//     var childProcess = cp.spawn('gdb', [String(filenum)]);
-//     childProcess.stdout.setEncoding('utf8');
-//     childProcess.stdout.on('error', function (err) { console.error(err); process.exit(1); });
-//     childProcess.stdin.on('error', function (err) { console.error(err); process.exit(1); });
-
-//     var stdout = "";
-//     var cnt = 0;
-
-//     childProcess.stdout.on("data", function (data) {
-//         if (cnt > 6) { console.log(data); stdout = stdout + data }
-//         if (data.indexOf('Inferior') != -1) {
-//             var rejson = JSON.stringify(stdout);
-//             res.send(rejson);
-//             process.exit(0);
-//         }
-//         cnt++;
-//     });
-
-//     childProcess.stdin.write('break main\n');
-//     childProcess.stdin.write('run\n');
-
-//     var n = 0;
-//     while(n < 1000) {
-//         childProcess.stdin.write('step\n');
-//         childProcess.stdin.write('info locals\n');
-//         n++;
-//     }
-
-//     childProcess.stdin.write('q\n');
-//     childProcess.stdin.end();
-
-//     // var cmd = "python3 RemoveFile.py " + filenum;
-//     // cp.exec(cmd, {}, function (error, stdout, stderr) { console.log(stdout); });
-// });
-
 app.post('/api/debug', function (req, res) {
     var info_array = JSON.parse(req.body.array);
     var cmd_array = "";
@@ -228,8 +189,6 @@ app.post('/api/debug', function (req, res) {
         cp.exec("python3 RemoveFile.py " + String(filenum), {}, function (error, stdout, stderr) {});
         res.send(rejson);
     });
-
-
 });
 
 app.listen(3000, function () {
