@@ -141,7 +141,7 @@ var code = localstorage_code.replace(/@\\n@/g, '\n');
 aceEditor.setValue(code, 0);
 
 // var Range = ace.require('ace/range').Range;
-// aceEditor.session.addMarker(new Range(2, 200, 4, 200), "myMarker", "fullLine");
+// aceEditor.session.addMarker(new Range(2, 200, 5, 200), "myMarker", "fullLine");
 
 // aceEditor.getSession().setAnnotations([{
 //     row: 1,
