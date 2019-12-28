@@ -44,37 +44,75 @@ function debug() {
             console.log(res_array);
 
             $("#db_result").empty();
-        $('#db_result').append('<span style="color: red">' + res_array[1] + '</span><br><br>');
+            $('#db_result').append('<span style="color: red">' + res_array[1] + '</span><br><br>');
         
-        $('#db_result').append('<div class=""><table class="table table-striped"><thead><tr><th>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id="abc"></tbody></table></div>');
+            $('#db_result').append('<div class=""><table class="table table-striped"><thead><tr><th>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id="abc"></tbody></table></div>');
         
-        var flag = true;
-        var insert = "";
-        for (var i=2; i<res_array.length; i++) {
-            if (res_array[i].indexOf('@@@') != -1) {
-                var line = res_array[i].split('@@@');
-                insert = "<tr><td>" + line[0] + "</td><td>" + line[1] +"</td><td>";
-                if ((res_array[i+1].indexOf('@@@') == -1) && (res_array[i+1].match(/\s=\s/) != null)) {
-                    insert = insert + res_array[i+1];
-                    var now = i+2;
-                    while(flag == true) {
-                        if ((res_array[now].indexOf('@@@')) == -1 && (res_array[now].match(/\s=\s/) != null)) {
-                            insert = insert + "&emsp;&emsp;&emsp;" + res_array[now];
-                        } else {
-                            flag = false;
+            // var flag = true;
+            // var insert = "";
+            // for (var i=2; i<res_array.length; i++) {
+            //     if (res_array[i].indexOf('@@@') != -1) {
+            //         var line = res_array[i].split('@@@');
+            //         insert = "<tr><td>" + line[0] + "</td><td>" + line[1] +"</td><td>";
+            //         if ((res_array[i+1].indexOf('@@@') == -1) && (res_array[i+1].match(/\s=\s/) != null)) {
+            //             insert = insert + res_array[i+1];
+            //             var now = i+2;
+            //             while(flag == true) {
+            //                 if ((res_array[now].indexOf('@@@')) == -1 && (res_array[now].match(/\s=\s/) != null)) {
+            //                     insert = insert + "&emsp;&emsp;&emsp;" + res_array[now];
+            //                 } else {
+            //                     flag = false;
+            //                 }
+            //                 now++;
+            //             }
+            //             insert = insert + "</td></tr>";
+            //             flag = true;
+            //             $('#abc').append(insert);
+            //         } else {
+            //             insert = insert + "</td></tr>";
+            //             $('#abc').append(insert);
+            //         }
+            //     }
+            // }
+            var line = [];
+            for (var i=2; i<res_array.length; i++) {
+                if (res_array[i].indexOf('@@@') != -1) {
+                    var tmp = res_array[i].split('@@@');
+                    for (var j=0; j<tmp[0].length; j++) {
+                        if (tmp[0][j] != ' ') {
+                            tmp[0] = tmp[0].slice(j);
+                            break;
                         }
+                    }
+                    for (var j=0; j<tmp[1].length; j++) {
+                        if (tmp[1][j] != ' ') {
+                            tmp[1] = tmp[1].slice(j);
+                            break;
+                        }
+                    }
+                    var now = i + 1;                    
+                    var temp = [];
+                    while (true) {
+                        if (res_array.length == now) break;
+                        if (res_array[now].indexOf('@@@') != -1) break;
+                        for (var k=0; k<res_array[now].length; k++) {
+                            if (res_array[now][k] != ' ') {
+                                res_array[now] = res_array[now].slice(k);
+                                break;
+                            }
+                        }
+                        if (res_array[now].indexOf(': *') != -1) {}
+                        temp.push(res_array[now]);
                         now++;
                     }
-                    insert = insert + "</td></tr>";
-                    flag = true;
-                    $('#abc').append(insert);
-                } else {
-                    insert = insert + "</td></tr>";
-                    $('#abc').append(insert);
+                    tmp.push(temp);
+                    line.push(tmp);
                 }
             }
-        }
-
+            for (var i=1; i<line.length; i++) {
+                line[i-1][2] = line[i][2];
+            }
+            console.log(line);
         }).fail(function (xhr, status, error) {
             $("#debug_button").text("🐞 Debug").prop("disabled", false);
             alert(status);
