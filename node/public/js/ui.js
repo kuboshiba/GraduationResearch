@@ -80,7 +80,7 @@ function setEditorLanguage(language) {
     aceEditor.getSession().setMode("ace/mode/" + mode);
 }
 
-aceEditor.setTheme("ace/theme/dracula");
+aceEditor.setTheme("ace/theme/monokai");
 $("#language").val("c");
 setEditorLanguage("c");
 
