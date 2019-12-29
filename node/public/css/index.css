@@ -53,21 +53,6 @@ body {
     padding: 0;
 }
 
-#status_pane {
-    margin-top: 5px;
-    margin-left: 15px;
-    background-color: white;
-    width: 90%;
-    border-radius: 1em;
-    border: solid 1px gray;
-}
-
-#status_pane_body {
-    height: 100%;
-    width: 100%;
-    padding: 10px;
-}
-
 #stdin_pane {
     margin-top: 5px;
     margin-left: 15px;
