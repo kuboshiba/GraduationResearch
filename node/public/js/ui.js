@@ -155,12 +155,17 @@ var code = localstorage_code.replace(/@\\n@/g, '\n');
 
 aceEditor.setValue(code, 0);
 
-// var Range = ace.require('ace/range').Range;
-// aceEditor.session.addMarker(new Range(2, 200, 5, 200), "myMarker", "fullLine");
-
 // aceEditor.getSession().setAnnotations([{
 //     row: 1,
 //     column: 0,
 //     text: "Error Message", // Or the Json reply from the parser 
 //     type: "error" // also "warning" and "information"
 // }]);
+
+document.addEventListener('keydown', (event) => {
+    if (event.key == "[") {
+
+    } else if (event.key == "]") {
+
+    }
+});

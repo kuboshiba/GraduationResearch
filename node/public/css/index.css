@@ -53,10 +53,6 @@ body {
     padding: 0;
 }
 
-/* #source_code * {
-    font-family:Courier,Monaco,Menlo,"Ubuntu Mono",Consolas,source-code-pro,monospace;
-} */
-
 #stdin_pane {
     margin-top: 5px;
     margin-left: 15px;
