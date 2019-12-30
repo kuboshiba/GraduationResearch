@@ -44,8 +44,6 @@ function debug() {
             console.log(res_array);
 
             $("#db_result").empty();
-            // $('#db_result').append('<span style="color: red">' + res_array[1] + '</span><br><br>');
-        
             $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
         
             var line = [];

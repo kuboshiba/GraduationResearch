@@ -35,23 +35,27 @@ body {
 
 .terminal {
     height: 100%;
-    width: 50%;
+    width: 40%;
     padding: 5px;
     background-color: black;
     color: white;
-    resize: both;
+    resize: horizontal;
     overflow: scroll;
 }
 
 #source_code {
-    width: 50%;
+    width: 60%;
     height: 100%;
     font-size: 25px;
-    resize: both;
+    resize: horizontal;
     overflow: scroll;
     margin: 0;
     padding: 0;
 }
+
+/* #source_code * {
+    font-family:Courier,Monaco,Menlo,"Ubuntu Mono",Consolas,source-code-pro,monospace;
+} */
 
 #stdin_pane {
     margin-top: 5px;
@@ -66,10 +70,4 @@ body {
     position: absolute;
     background: rgba(100, 200, 100, 0.5);
     z-index: 20
-}
-
-.myMarkerNone {
-    position: absolute;
-    background: none;
-    z-index: 20;
 }
