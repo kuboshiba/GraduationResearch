@@ -80,7 +80,6 @@ function setEditorLanguage(language) {
     aceEditor.getSession().setMode("ace/mode/" + mode);
 }
 
-aceEditor.setTheme("ace/theme/monokai");
 $("#language").val("c");
 setEditorLanguage("c");
 
@@ -100,17 +99,33 @@ obj1.addEventListener("change", function (evt) {
     }
 }, false);
 
+if (localStorage.getItem('font-size') != null) {
+    ChangeFontSize(localStorage.getItem('font-size'));
+} else {
+    ChangeFontSize(17);
+    localStorage.setItem('font-size', "17");
+}
+
 function ChangeFontSize(font_size) {
     $('#source_code').css('font-size', font_size + 'px');
+    localStorage.setItem('font-size', font_size);
 }
-ChangeFontSize(17);
 
 function ChangeTabSize(tab_size) {
     var code = aceEditor.getValue();
 }
 
+if (localStorage.getItem('editor-theme') != null) {
+    var editor_theme = "ace/theme/" + localStorage.getItem('editor-theme');
+    aceEditor.setTheme(editor_theme);
+} else {
+    aceEditor.setTheme("ace/theme/monokai");
+    localStorage.setItem('editor-theme', 'monokai');
+}
+
 function ChangeTheme(theme) {
     aceEditor.setTheme("ace/theme/" + theme);
+    localStorage.setItem('editor-theme', theme);
 }
 
 function ExportFile() {
