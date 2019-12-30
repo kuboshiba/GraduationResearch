@@ -44,9 +44,9 @@ function debug() {
             console.log(res_array);
 
             $("#db_result").empty();
-            $('#db_result').append('<span style="color: red">' + res_array[1] + '</span><br><br>');
+            // $('#db_result').append('<span style="color: red">' + res_array[1] + '</span><br><br>');
         
-            $('#db_result').append("<div><table class='table table-striped'><thead><tr><th>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
+            $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
         
             var line = [];
             for (var i=2; i<res_array.length; i++) {
@@ -98,7 +98,8 @@ function debug() {
 
             for (var i=0; i<line.length; i++) {
                 var insert = "";
-                insert = "<tr><th style='text-align: center'>" + line[i][0] +
+                insert = "<tr onmouseover='highlight_line(this);' class='tr_line' id='line_" + String(i) +
+                        "'><th style='text-align: center'>" + line[i][0] +
                         "</th><td>" + line[i][1] + 
                         "</td>";
                 if (line[i].length >= 3) {
@@ -117,4 +118,16 @@ function debug() {
             alert(status);
         });
     }
+}
+var Range = ace.require('ace/range').Range;
+var marker_status = 0;
+var res, marker = 0;
+function highlight_line(info) {
+    aceEditor.getSession().removeMarker(marker);
+    var tmp = info.innerHTML.match('\>.+?\<\/th>');
+    res = Number(tmp[0].replace(/[^0-9]/g, ''));
+    marker_status = res;
+
+    var range = new Range(res-1, 0, res-1, 200);
+    marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
 }

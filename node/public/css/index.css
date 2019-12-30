@@ -67,3 +67,9 @@ body {
     background: rgba(100, 200, 100, 0.5);
     z-index: 20
 }
+
+.myMarkerNone {
+    position: absolute;
+    background: none;
+    z-index: 20;
+}
