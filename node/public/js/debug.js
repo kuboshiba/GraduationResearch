@@ -7,6 +7,13 @@ function debug() {
     var array_name_3 = document.getElementById("array_name_3").value;
     var array_len_3 = document.getElementById("array_len_3").value;
 
+    var flag = false;
+    if ((!isNaN(array_len_1) || array_len_1 == "") && (!isNaN(array_len_2) || array_len_2 == "") && (!isNaN(array_len_3) || array_len_3 == "")) {
+        flag = true;
+    } else {
+        $('#alert-array').show();
+    }
+
     if (array_name_1 != "" && array_len_1 != "" && !isNaN(array_len_1))
         array.push({'name': array_name_1, 'len': array_len_1});
     if (array_name_2 != "" && array_len_2 != "" && !isNaN(array_len_2))
@@ -16,8 +23,7 @@ function debug() {
 
     var json_array = JSON.stringify(array);
     
-    if (array.length == 0) $('#alert-array').show();
-    else {
+    if (flag == true) {
         $('#alert-array').hide();
         $('#modal_array').modal('toggle');
 
@@ -36,7 +42,7 @@ function debug() {
             dataType: 'json'
         }).done(function (res) {
             $("#debug_button").text("🐞 Debug").prop("disabled", false);
-            
+
             var res_new = res.replace(/\(gdb\)/g, '');
             res_new = res_new.replace(/\r?\n/g, '<br>');
             res_new = res_new.replace(/\r?\t/g, '@@@');
