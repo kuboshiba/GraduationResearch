@@ -3,7 +3,7 @@ toastr.options = {
     "debug": true,
     "newestOnTop": true,
     "progressBar": true,
-    "positionClass": "toast-top-right",
+    "positionClass": "toast-bottom-right",
     "preventDuplicates": true,
     "onclick": null,
     "showDuration": "300",
@@ -163,9 +163,9 @@ aceEditor.setValue(code, 0);
 // }]);
 
 document.addEventListener('keydown', (event) => {
-    if (event.key == "[") {
-
-    } else if (event.key == "]") {
-
+    if (event.key == "[" && debug_status == true) {
+        console.log("[");
+    } else if (event.key == "]" && debug_status == true) {
+        console.log("]");
     }
 });

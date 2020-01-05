@@ -1,3 +1,4 @@
+var debug_status = false;
 function debug() {
     var array = [];
     var array_name_1 = document.getElementById("array_name_1").value;
@@ -41,7 +42,10 @@ function debug() {
             },
             dataType: 'json'
         }).done(function (res) {
+            debug_status = true;
             $("#debug_button").text("🐞 Debug").prop("disabled", false);
+            toastr["success"]("Successfully debuged", "Success");
+            aceEditor.getSession().removeMarker(marker); // remove marker
 
             var res_new = res.replace(/\(gdb\)/g, '');
             res_new = res_new.replace(/\r?\n/g, '<br>');
@@ -51,7 +55,7 @@ function debug() {
 
             $("#db_result").empty();
             $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
-        
+
             var line = [];
             for (var i=2; i<res_array.length; i++) {
                 if (res_array[i].indexOf('@@@') != -1) {

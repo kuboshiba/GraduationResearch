@@ -32,6 +32,8 @@ function runCode() {
             $('#terminal_command').text(" python3 Main.py");
     }
 
+    aceEditor.getSession().removeMarker(marker); // remove marker
+
     $.ajax({
         url: "/api/run",
         method: "POST",
