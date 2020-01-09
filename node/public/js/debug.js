@@ -83,7 +83,7 @@ function debug() {
                                 break;
                             }
                         }
-                        temp.push(res_array[now]);
+                        if (res_array[now].indexOf(" = ") != -1) temp.push(res_array[now]);
                         now++;
                     }
 
@@ -104,6 +104,26 @@ function debug() {
             for (var i=1; i<line.length; i++) line[i-1][2] = line[i][2];
             console.log(line);
 
+            var code = aceEditor.getValue();
+            var cnt = 1;
+            var count = 1;
+            for (var i=0; i<code.length; i++) { if (code[i] == '\n') cnt++; }
+            var last_code = "";
+            for (var i=0; i<code.length; i++) {
+                if (code[i] == '\n') {
+                    count++;
+                    if (count == cnt) {
+                        for (var j=i+1; j<code.length; j++) {
+                            last_code += code[j];
+                        }
+                    }
+                }
+            }
+            var buf = line[line.length-1][1];
+            line[line.length-1][1] = last_code;
+            buf = buf.split(last_code + " ");
+            line[line.length-1][2].unshift(buf[1]);
+
             for (var i=0; i<line.length; i++) {
                 var insert = "";
                 insert = "<tr onmouseover='highlight_line(this);' class='tr_line' id='line_" + String(i) +
@@ -113,7 +133,7 @@ function debug() {
                 if (line[i].length >= 3) {
                     insert += "<td>";
                     for (var j=0; j<line[i][2].length; j++) {
-                        insert += line[i][2][j] + "&emsp;&emsp;";
+                        if (line[i][2][j] != undefined) insert += line[i][2][j] + "&emsp;&emsp;";
                     }
                     insert += "</td></tr>";
                 } else {
