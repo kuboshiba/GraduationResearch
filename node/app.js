@@ -33,7 +33,7 @@ app.post('/api/run', function (req, res) {
         '--pids-limit 10 ' +
         '--net none ' +
         '--cpuset-cpus=0 ' +
-        '--memory=512m --memory-swap=512m ' +
+        '--memory=10m --memory-swap=60m ' +
         '--ulimit nproc=10:10 ' +
         '--ulimit fsize=1000000:1000000 ' +
         '-w /workspace ' +
@@ -157,11 +157,12 @@ app.post('/api/debug', function (req, res) {
     }
     console.log(cmd_array);
     var filenum = CompileForGDB(req.body.source_code);
-    var execCmd = "node gdb.js " + String(filenum) + " " + String(info_array.length) + " " + cmd_array;
+    var execCmd = "timeout 30 node gdb.js " + String(filenum) + " " + String(info_array.length) + " " + cmd_array;
 
     // Create a container
     var dockerCmd =
-        'docker create -it ' + 
+        'docker create -it ' +
+        '--memory=100m --memory-swap=100m ' +
         '-v /Users/kbt_hrk/Git/GraduationResearch/node:/Users/kbt_hrk/Git/GraduationResearch/node ' +
         '-w /Users/kbt_hrk/Git/GraduationResearch/node ' +
         'centos-dev ' + 
