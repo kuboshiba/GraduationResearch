@@ -43,6 +43,7 @@ function debug() {
             dataType: 'json'
         }).done(function (res) {
             debug_status = true;
+            debug_status_line = 0;
             $("#debug_button").text("🐞 Debug").prop("disabled", false);
             toastr["success"]("Successfully debuged", "Success");
             aceEditor.getSession().removeMarker(marker); // remove marker
@@ -54,7 +55,7 @@ function debug() {
             console.log(res_array);
 
             $("#db_result").empty();
-            $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
+            $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
 
             var line = [];
             for (var i=2; i<res_array.length; i++) {
@@ -155,7 +156,6 @@ function highlight_line(info) {
     var tmp = info.innerHTML.match('\>.+?\<\/th>');
     res = Number(tmp[0].replace(/[^0-9]/g, ''));
     marker_status = res;
-
     var range = new Range(res-1, 0, res-1, 200);
     marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
 }

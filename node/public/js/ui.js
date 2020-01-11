@@ -162,10 +162,44 @@ aceEditor.setValue(code, 0);
 //     type: "error" // also "warning" and "information"
 // }]);
 
-document.addEventListener('keydown', (event) => {
-    if (event.key == "[" && debug_status == true) {
-        console.log("[");
-    } else if (event.key == "]" && debug_status == true) {
-        console.log("]");
+$(window).keydown(function(e) {
+    if (event.ctrlKey && debug_status === true) {
+        // pushed Ctrl+[
+        if (e.keyCode == 188) {
+            aceEditor.getSession().removeMarker(marker);
+            if (debug_status_line == 0) {
+                $('#line_0')[0].scrollIntoView(true);
+                $('#line_0').css('background-color', 'gray');
+                var tmp = $('#line_0').html().match('\>.+?\<\/th>');
+                res = Number(tmp[0].replace(/[^0-9]/g, ''));
+                marker_status = res;
+                var range = new Range(res-1, 0, res-1, 200);
+                marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
+            }
+            else if (debug_status_line > 0) {
+                $('#line_' + String(debug_status_line)).css('background-color', 'white');
+                debug_status_line--;
+                var tmp = $('#line_' + String(debug_status_line)).html().match('\>.+?\<\/th>');
+                res = Number(tmp[0].replace(/[^0-9]/g, ''));
+                marker_status = res;
+                var range = new Range(res-1, 0, res-1, 200);
+                marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
+                $('#line_' + String(debug_status_line))[0].scrollIntoView(true);
+                $('#line_' + String(debug_status_line)).css('background-color', 'gray');
+            }
+        }
+        // pushed Ctrl+]
+        if (e.keyCode == 190) {
+            aceEditor.getSession().removeMarker(marker);
+            $('#line_' + String(debug_status_line)).css('background-color', 'white');
+            debug_status_line++;
+            var tmp = $('#line_' + String(debug_status_line)).html().match('\>.+?\<\/th>');
+            res = Number(tmp[0].replace(/[^0-9]/g, ''));
+            marker_status = res;
+            var range = new Range(res-1, 0, res-1, 200);
+            marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
+            $('#line_' + String(debug_status_line))[0].scrollIntoView(true);
+            $('#line_' + String(debug_status_line)).css('background-color', 'gray');
+        }
     }
 });

@@ -27,7 +27,7 @@ body {
 #db_result {
     height: 100%;
     width: 100%;
-    padding: 10px;
+    /* padding: 10px; */
     background-color: #F5F5F5;
     white-space:nowrap;
     overflow:scroll;
