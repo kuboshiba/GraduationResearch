@@ -169,7 +169,7 @@ $(window).keydown(function(e) {
             aceEditor.getSession().removeMarker(marker);
             if (debug_status_line == 0) {
                 $('#line_0')[0].scrollIntoView(true);
-                $('#line_0').css('background-color', 'gray');
+                $('#line_0').css('background-color', 'lightgray');
                 var tmp = $('#line_0').html().match('\>.+?\<\/th>');
                 res = Number(tmp[0].replace(/[^0-9]/g, ''));
                 marker_status = res;
@@ -185,7 +185,7 @@ $(window).keydown(function(e) {
                 var range = new Range(res-1, 0, res-1, 200);
                 marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
                 $('#line_' + String(debug_status_line))[0].scrollIntoView(true);
-                $('#line_' + String(debug_status_line)).css('background-color', 'gray');
+                $('#line_' + String(debug_status_line)).css('background-color', 'lightgray');
             }
         }
         // pushed Ctrl+]
@@ -199,7 +199,7 @@ $(window).keydown(function(e) {
             var range = new Range(res-1, 0, res-1, 200);
             marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
             $('#line_' + String(debug_status_line))[0].scrollIntoView(true);
-            $('#line_' + String(debug_status_line)).css('background-color', 'gray');
+            $('#line_' + String(debug_status_line)).css('background-color', 'lightgray');
         }
     }
 });
