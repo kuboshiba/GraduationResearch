@@ -33,6 +33,17 @@ body {
     overflow:scroll;
 }
 
+.debug_variable {
+    height: 100%;
+    width: 40%;
+    padding: 5px;
+    background-color: white;
+    color: black;
+    resize: vertical;
+    overflow: scroll;
+    font-family: 'Courier Prime', monospace;
+}
+
 .terminal {
     height: 100%;
     width: 40%;
@@ -41,6 +52,7 @@ body {
     color: white;
     resize: vertical;
     overflow: scroll;
+    font-family: 'Courier Prime', monospace;
 }
 
 #source_code {

@@ -2,6 +2,8 @@ function runCode() {
     var loading = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
 
     $("#run_button").html('Running ' + loading).prop("disabled", true);
+    $(".terminal").css('display', 'block');
+    $(".debug_variable").css('display', 'none');
 
     var language = $("#language").val();
     var source_code = aceEditor.getValue();
@@ -47,7 +49,7 @@ function runCode() {
         $("#stderr").text(result.stderr);
         $("#time").text(result.time + ' s');
         $("#exit_code").text(result.exit_code);
-        $("#run_button").text("▶ Run (Ctrl+Enter)").prop("disabled", false);
+        $("#run_button").text("▶ 実行 (Ctrl+Enter)").prop("disabled", false);
         if (result.stderr == '') {
             toastr["success"]("Successfully compiled", "Success");
         } else {

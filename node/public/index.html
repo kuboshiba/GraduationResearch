@@ -44,27 +44,45 @@
                 <li class="nav-item dropdown active">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        File
+                        ファイル
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_fileopen">Open</a>
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal_fileopen">開く</a>
                         <div class="dropdown-divider"></div>
-                        <button class="dropdown-item" onClick="saveCode();">Save on Blowser</button>
+                        <button class="dropdown-item" onClick="saveCode();">ブラウザに保存する</button>
                         <div class="dropdown-divider"></div>
-                        <button class="dropdown-item" id="export" onClick="ExportFile();">Export</button>
+                        <button class="dropdown-item" id="export" onClick="ExportFile();">エクスポート</button>
                     </div>
                 </li>
                 <li class="nav-item active ml-2">
-                    <a class="nav-link" href="#setting" data-toggle="modal" data-target="#modal_setting">⚙ Setting</a>
+                    <a class="nav-link" href="#setting" data-toggle="modal" data-target="#modal_setting">⚙ 設定</a>
                 </li>
-                <li class="nav-item active ml-2">
-                    <button id="run_button" class="btn btn-success">▶ Run (Ctrl+Enter)</button>
+                <li class="nav-item dropdown active ml-3">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        ソートプログラム
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <button class="dropdown-item" onClick="insertProgram(0);">単純ソート</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" onClick="insertProgram(1);">バブルソート</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" onClick="insertProgram(2);">選択ソート</button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" onClick="insertProgram(3);">挿入ソート</button>
+                    </div>
                 </li>
-                <li class="nav-item active ml-2">
-                    <button id="debug_button" class="btn btn-danger" data-toggle="modal" data-target="#modal_array">🐞 Debug</button>
-                </li>
-                <li class="nav-item active ml-2">
+                <li class="nav-item active ml-3">
                     <a class="nav-link" href="#stdin" data-toggle="modal" data-target="#modal_stdin">STDIN</a>
+                </li>
+                <li class="nav-item active ml-3">
+                    <button id="run_button" class="btn btn-success">▶ 実行 (Ctrl+Enter)</button>
+                </li>
+                <li class="nav-item active ml-3">
+                    <button id="debug_button" class="btn btn-danger" data-toggle="modal" data-target="#modal_array">🐞 ステップ毎のデバッグ</button>
+                </li>
+                <li class="nav-item active ml-3">
+                    <button class="btn btn-outline-danger" onClick="debug_block();">🐞 ブロック毎のデバッグ</button>
                 </li>
             </ul>
         </div>
@@ -80,6 +98,7 @@
                 <pre><div id="stdout" style="color: white;"></div></pre>
                 <pre><div id="stderr" style="color: red;"></div></pre>
             </div>
+            <div class="debug_variable" style="display: none;"></div>
         </div>
         <div class="bottom_pane">
             <div id="db_result" style="font-size: 14px;"></div>
@@ -236,6 +255,7 @@
                     <div id="alert-array" class="alert alert-danger" role="alert" style="display: none;">
                         正しく入力してください
                     </div>
+                    <span>配列を使用しない場合は未入力でOK</span><br><br>
                     <form>
                         <div class="row">
                             <div class="col-md-1">
@@ -248,28 +268,6 @@
                                 <input id="array_len_1" type="text" class="form-control" placeholder="配列長">
                             </div>
                         </div>
-                        <div class="row pt-4">
-                            <div class="col-md-1">
-                                2:
-                            </div>
-                            <div class="col-md-8">
-                                <input id="array_name_2" type="text" class="form-control" placeholder="配列名">
-                            </div>
-                            <div class="col-md-3">
-                                <input id="array_len_2" type="text" class="form-control" placeholder="配列長">
-                            </div>
-                        </div>
-                        <div class="row pt-4">
-                            <div class="col-md-1">
-                                3:
-                            </div>
-                            <div class="col-md-8">
-                                <input id="array_name_3" type="text" class="form-control" placeholder="配列名">
-                            </div>
-                            <div class="col-md-3">
-                                <input id="array_len_3" type="text" class="form-control" placeholder="配列長">
-                            </div>
-                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -280,7 +278,7 @@
         </div>
     </div>
 
-    <!-- Modal for Info of Array -->
+    <!-- Modal for Info of stdin -->
     <div class="modal fade" id="modal_stdin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -320,5 +318,6 @@
     <script src="./js/debug.js"></script> <!-- UI related -->
     <script src="./js/run.js"></script> <!-- Ajax related -->
     <script src="./js/ui.js"></script> <!-- UI related -->
+    <script src="./js/insert.js"></script> <!-- UI related -->
 </body>
 </html>
