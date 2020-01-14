@@ -25,6 +25,7 @@ function debug() {
         $(".debug_variable").css('display', 'none');
 
         var source_code = aceEditor.getValue();
+        console.log(source_code);
 
         var loading = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
         $("#debug_button").html('Debugging ' + loading).prop("disabled", true);
@@ -49,7 +50,8 @@ function debug() {
             res_new = res_new.replace(/\r?\t/g, '@@@');
             var res_array = res_new.split('<br>');
             console.log(res_array);
-
+            
+            $('.debug_variable').empty();
             $("#db_result").empty();
             $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
 
@@ -161,6 +163,7 @@ function debug_block() {
         return false;
     } else {
         $("#db_result").empty();
+        $(".debug_variable").empty();
         $(".terminal").css('display', 'none');
         $(".debug_variable").css('display', 'block');
         var source_code = aceEditor.getValue();
@@ -177,8 +180,6 @@ function debug_block() {
                 block.push([i+1, data[i]]);
             }
         }
-
-        console.log(block);
         
         for (var i=0; i<block.length; i++) {
             for (var j=0; j<data.length; j++) {
@@ -243,5 +244,50 @@ function debug_block() {
                 'for="exampleRadios' + String(i) + '">' + block[i][1] + '</label></div>';
             $('.debug_variable').append(insert);
         }
+
+        aceEditor.getSession().removeMarker(marker);
+
+        if (block[0].length == 3) {
+            var range = new Range(block[0][0]-1, 0, block[0][2]-1, 200);
+            marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
+        } else {
+            var range = new Range(block[0][0]-1, 0, block[0][0]-1, 200);
+            marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
+        }
+
+        $('input[name="exampleRadios"]').change(function() {
+            var value = $(this).val();
+            aceEditor.getSession().removeMarker(marker);
+            if (block[value].length == 3) {
+                var range = new Range(block[value][0]-1, 0, block[value][2]-1, 200);
+                marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
+
+                $("#db_result").empty();
+                $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
+
+                for (var i=0; i<line.length; i++) {
+                    if (block[value][0] == line[i][0]) {
+                        var insert = "";
+                        insert = "<tr class='tr_line' id='line_" + String(i) +
+                            "'><th style='text-align: center'>" + line[i][0] +
+                            "</th><td>" + line[i][1] + 
+                            "</td>";
+                        if (line[i].length >= 3) {
+                            insert += "<td>";
+                            for (var j=0; j<line[i][2].length; j++) {
+                                if (line[i][2][j] != undefined) insert += line[i][2][j] + "&emsp;&emsp;";
+                            }
+                            insert += "</td></tr>";
+                        } else {
+                            insert += "<td></td></tr>";
+                        }
+                        $('#abc').append(insert);
+                    }
+                }
+            } else {
+                var range = new Range(block[value][0]-1, 0, block[value][0]-1, 200);
+                marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
+            }
+        });
     }
 }
