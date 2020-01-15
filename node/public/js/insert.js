@@ -30,7 +30,7 @@ int main() {\n\
     int array[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };\n\
     int i, j, buf = 0;\n\
     \n\
-    for (i=0; i<10; i++) printf("%d ", array[i]);\n\
+    for (i=0; i<10; i++) printf("%2d", array[i]);\n\
     \n\
     for (i=0; i<9; i++){\n\
         for (j=9; j>=i+1; j--){\n\
@@ -43,7 +43,7 @@ int main() {\n\
     }\n\
     \n\
     printf("\\n");\n\
-    for (i=0; i<10; i++) printf("%d ", array[i]);\n\
+    for (i=0; i<10; i++) printf("%2d", array[i]);\n\
     \n\
     return 0;\n\
 }\n\
@@ -56,8 +56,7 @@ int main() {\n\
     int array[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };\n\
     int i, j, min_index, buf = 0;\n\
     \n\
-    printf("Before : ");\n\
-    for (i=0; i<10; i++) printf("%d ", array[i]);\n\
+    for (i=0; i<10; i++) printf("%2d", array[i]);\n\
     \n\
     for (i=0; i<9; i++) {\n\
         min_index = i;\n\
@@ -71,8 +70,8 @@ int main() {\n\
         array[i] = buf;\n\
     }\n\
     \n\
-    printf("\\nAfter  : ");\n\
-    for (i=0; i<10; i++) printf("%d ", array[i]);\n\
+    printf("\\n");\n\
+    for (i=0; i<10; i++) printf("%2d", array[i]);\n\
     \n\
     return 0;\n\
 }\n\
@@ -85,8 +84,7 @@ int main() {\n\
     int array[10] = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0 };\n\
     int i, j, buf = 0;\n\
     \n\
-    printf("Before : ");\n\
-    for (i=0; i<10; i++) printf("%d ", array[i]);\n\
+    for (i=0; i<10; i++) printf("%2d", array[i]);\n\
     \n\
     for (i=1; i<10; i++) {\n\
         j = i;\n\
@@ -98,8 +96,8 @@ int main() {\n\
         }\n\
     }\n\
     \n\
-    printf("\\nAfter  : ");\n\
-    for (i=0; i<10; i++) printf("%d ", array[i]);\n\
+    printf("\\n");\n\
+    for (i=0; i<10; i++) printf("%2d", array[i]);\n\
     \n\
     return 0;\n\
 }\n\
