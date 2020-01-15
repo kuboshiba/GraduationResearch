@@ -196,8 +196,13 @@ app.post('/api/review', function (req, res) {
     var info_array = JSON.parse(req.body.review);
     console.log(info_array);
 
+    var text = String(info_array[0]) + ", " + 
+        String(info_array[1]) + ", " + 
+        String(info_array[2]) + ", " +
+        info_array[3] + '\n';
+
     try {
-        fs.writeFileSync("review.csv", info_array);
+        fs.appendFileSync("review.csv", text);
         console.log('write end');
     }catch(e){
         console.log(e);

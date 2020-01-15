@@ -317,7 +317,13 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <span>
+                        1〜5の5段階評価です．<br>
+                        1:　非常に悪い <br>
+                        3:　普通 <br>
+                        5:　非常に良い
+                    </span>
+                    <div class="form-group mt-3">
                         <h5>操作のしやすさ</h5>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="review_1" value="1">
@@ -341,8 +347,8 @@
                         </div>
                     </div>
 
-                    <div class="form-group mt-5">
-                        <h5>デバッグ結果の分かりやすさ</h5>
+                    <div class="form-group mt-3">
+                        <h5>変数値の変化表示の分かりやすさ</h5>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="review_2" value="1">
                             <label class="form-check-label" for="inlineRadio1">1</label>
@@ -365,7 +371,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group mt-5">
+                    <div class="form-group mt-3">
                         <h5>実際にこのツールを使いたいと思うか</h5>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="review_3" value="1">
@@ -389,9 +395,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group mt-5">
-                        <h5>感想（自由に書いてください）</h5>
-                        <textarea id="review_textarea" name="review_textarea" class="form-control" rows="4"></textarea>
+                    <div class="form-group mt-3">
+                        <h5>要望・感想（自由記述）</h5>
+                        <textarea id="review_textarea" name="review_textarea" class="form-control" rows="5" 
+                            placeholder="このような機能が欲しい，などがあれば書いてください．"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
