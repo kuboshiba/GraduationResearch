@@ -1,6 +1,10 @@
 var debug_status = false;
 var line = [];
 
+function click_line(info) {
+    console.log(info);
+}
+
 function debug() {
     var array = [];
     var array_name_1 = document.getElementById("array_name_1").value;
@@ -25,7 +29,6 @@ function debug() {
         $(".debug_variable").css('display', 'none');
 
         var source_code = aceEditor.getValue();
-        console.log(source_code);
 
         var loading = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>';
         $("#debug_button").html('Debugging ' + loading).prop("disabled", true);
@@ -53,7 +56,7 @@ function debug() {
             
             $('.debug_variable').empty();
             $("#db_result").empty();
-            $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
+            $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>行番号</th></th><th>コード</th><th>変数</th></tr></thead><tbody id='abc'></tbody></table></div>");
 
             for (var i=2; i<res_array.length; i++) {
                 if (res_array[i].indexOf('@@@') != -1) {
@@ -131,7 +134,23 @@ function debug() {
                 if (line[i].length >= 3) {
                     insert += "<td>";
                     for (var j=0; j<line[i][2].length; j++) {
-                        if (line[i][2][j] != undefined) insert += line[i][2][j] + "&emsp;&emsp;";
+                        if (line[i][2][j] != undefined) {
+                            if (line[i][2][j].indexOf("{") != -1) {
+                                var tmp = "";
+                                for (var x=0; x<line[i][2][j].length; x++) {
+                                    if (line[i][2][j][x] == "{") {
+                                        tmp += "{ ";
+                                    } else if (line[i][2][j][x] == "}") {
+                                        tmp += " }";
+                                    } else {
+                                        tmp += line[i][2][j][x];
+                                    }
+                                }
+                                insert += tmp + "&emsp;&emsp;";
+                            } else {
+                                insert += line[i][2][j] + "&emsp;&emsp;";
+                            }
+                        }
                     }
                     insert += "</td></tr>";
                 } else {
@@ -268,14 +287,30 @@ function debug_block() {
                 for (var i=0; i<line.length; i++) {
                     if (block[value][0] == line[i][0]) {
                         var insert = "";
-                        insert = "<tr class='tr_line' id='line_" + String(i) +
+                        insert = "<tr onClick='click_line(this);' class='tr_line' id='line_" + String(i) +
                             "'><th style='text-align: center'>" + line[i][0] +
                             "</th><td>" + line[i][1] + 
                             "</td>";
                         if (line[i].length >= 3) {
                             insert += "<td>";
                             for (var j=0; j<line[i][2].length; j++) {
-                                if (line[i][2][j] != undefined) insert += line[i][2][j] + "&emsp;&emsp;";
+                                if (line[i][2][j] != undefined) {
+                                    if (line[i][2][j].indexOf("{") != -1) {
+                                        var tmp = "";
+                                        for (var x=0; x<line[i][2][j].length; x++) {
+                                            if (line[i][2][j][x] == "{") {
+                                                tmp += "{ ";
+                                            } else if (line[i][2][j][x] == "}") {
+                                                tmp += " }";
+                                            } else {
+                                                tmp += line[i][2][j][x];
+                                            }
+                                        }
+                                        insert += tmp + "&emsp;&emsp;";
+                                    } else {
+                                        insert += line[i][2][j] + "&emsp;&emsp;";
+                                    }
+                                }
                             }
                             insert += "</td></tr>";
                         } else {
