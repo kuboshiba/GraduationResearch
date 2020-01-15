@@ -247,7 +247,7 @@ function debug_block() {
 
         aceEditor.getSession().removeMarker(marker);
 
-        if (block[0].length == 3) {
+        if (block[0].length >= 3) {
             var range = new Range(block[0][0]-1, 0, block[0][2]-1, 200);
             marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
         } else {
@@ -258,7 +258,7 @@ function debug_block() {
         $('input[name="exampleRadios"]').change(function() {
             var value = $(this).val();
             aceEditor.getSession().removeMarker(marker);
-            if (block[value].length == 3) {
+            if (block[value].length >= 3) {
                 var range = new Range(block[value][0]-1, 0, block[value][2]-1, 200);
                 marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
 

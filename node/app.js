@@ -192,6 +192,21 @@ app.post('/api/debug', function (req, res) {
     });
 });
 
+app.post('/api/review', function (req, res) {
+    var info_array = JSON.parse(req.body.review);
+    console.log(info_array);
+
+    try {
+        fs.writeFileSync("review.csv", info_array);
+        console.log('write end');
+    }catch(e){
+        console.log(e);
+    }
+
+    var rejson = JSON.stringify("success");
+    res.send(rejson);
+});
+
 app.listen(3000, function () {
     console.log('Listening on port 3000');
 });

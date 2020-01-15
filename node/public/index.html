@@ -84,6 +84,9 @@
                 <li class="nav-item active ml-3">
                     <button class="btn btn-outline-danger" onClick="debug_block();">🐞 ブロック毎のデバッグ</button>
                 </li>
+                <li class="nav-item active ml-3">
+                    <button class="btn btn-info" data-toggle="modal" data-target="#modal_review">感想レビュー</button>
+                </li>
             </ul>
         </div>
     </nav>
@@ -297,6 +300,103 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" onClick="$('#modal_stdin').modal('toggle');">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Review -->
+    <div class="modal fade" id="modal_review" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">感想レビュー</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <h5>操作のしやすさ</h5>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_1" value="1">
+                            <label class="form-check-label" for="inlineRadio1">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_1" value="2">
+                            <label class="form-check-label" for="inlineRadio2">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_1" value="3" checked>
+                            <label class="form-check-label" for="inlineRadio3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_1" value="4">
+                            <label class="form-check-label" for="inlineRadio3">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_1" value="5">
+                            <label class="form-check-label" for="inlineRadio3">5</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-5">
+                        <h5>デバッグ結果の分かりやすさ</h5>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_2" value="1">
+                            <label class="form-check-label" for="inlineRadio1">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_2" value="2">
+                            <label class="form-check-label" for="inlineRadio2">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_2" value="3" checked>
+                            <label class="form-check-label" for="inlineRadio3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_2" value="4">
+                            <label class="form-check-label" for="inlineRadio3">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_2" value="5">
+                            <label class="form-check-label" for="inlineRadio3">5</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-5">
+                        <h5>実際にこのツールを使いたいと思うか</h5>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_3" value="1">
+                            <label class="form-check-label" for="inlineRadio1">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_3" value="2">
+                            <label class="form-check-label" for="inlineRadio2">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_3" value="3" checked>
+                            <label class="form-check-label" for="inlineRadio3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_3" value="4">
+                            <label class="form-check-label" for="inlineRadio3">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="review_3" value="5">
+                            <label class="form-check-label" for="inlineRadio3">5</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-5">
+                        <h5>感想（自由に書いてください）</h5>
+                        <textarea id="review_textarea" name="review_textarea" class="form-control" rows="4"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                    <button type="button" class="btn btn-primary" onClick="send_review();">送信</button>
                 </div>
             </div>
         </div>

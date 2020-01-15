@@ -203,3 +203,31 @@ $(window).keydown(function(e) {
         }
     }
 });
+
+function send_review() {
+    var review_array = [];
+    review_array.push($('input[name=review_1]:checked').val());
+    review_array.push($('input[name=review_2]:checked').val());
+    review_array.push($('input[name=review_3]:checked').val());
+    review_array.push($('textarea[name="review_textarea"]').val());
+
+    var json_array = JSON.stringify(review_array);
+
+    $.ajax({
+        async: false,
+        url: '/api/review',
+        type: 'POST',
+        data: {
+            review: json_array,
+        },
+        dataType: 'json'
+    }).done(function (res) {
+        $('#modal_review').modal('toggle');
+        console.log(res);
+        if (res == "success") {
+            alert("送信しました");
+        }
+    }).fail(function (xhr, status, error) {
+        alert(status);
+    });
+}
