@@ -3,7 +3,7 @@ function runCode() {
 
     $("#run_button").html('Running ' + loading).prop("disabled", true);
     $(".terminal").css('display', 'block');
-    $(".debug_variable").css('display', 'none');
+    $(".debug_variable_parent").css('display', 'none');
 
     var language = $("#language").val();
     var source_code = aceEditor.getValue();

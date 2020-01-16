@@ -1,8 +1,51 @@
 var debug_status = false;
 var line = [];
+var res_new, res_array;
 
 function click_line(info) {
-    console.log(info);
+    $('.debug_variable_status').empty();
+
+    var spl = info.innerHTML.match('\>.+?\<\/th>');
+    var line_no = Number(spl[0].replace(/[^0-9]/g, ''));
+    spl = info.id.split("_");
+    var id = spl[1];
+
+    var val_now = [];
+
+    for (var i=0; i<line[id][2].length; i++) {
+        var tmp = line[id][2][i].split(" = ");
+        var array = [];
+        array.push(tmp[0]);
+        if (line[id][2][i].indexOf("{") != -1) {
+            tmp[1] = tmp[1].replace('{', '');
+            tmp[1] = tmp[1].replace('}', '');
+            tmp = tmp[1].split(',');
+            for (var j=0; j<tmp.length; j++) tmp[j] = Number(tmp[j]); 
+            array.push(tmp);
+            val_now.push(array);
+        } else {
+            tmp = Number(tmp[1]);
+            array.push(tmp);
+            val_now.push(array);
+        }
+    }
+
+    var insert = "";
+
+    for (var i=0; i<val_now.length; i++) {
+        if (val_now[i][1].length > 1) {
+            var th = "";
+            for (var j=0; j<val_now[i][1].length; j++) th += "<th>" + String(j) + "</th>";
+            var insert = "<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>要素番号</th>" + th + "</tr></thead><tbody id='def'></tbody></table></div>";
+            $('.debug_variable_status').append(insert);
+            var insert = "<tr><th style='text-align: center;'>値</th>";
+            var th = "";
+            for (var j=0; j<val_now[i][1].length; j++) th += "<td>" + String(val_now[i][1][j]) + "</td>";
+            insert += th + "</tr>";
+            console.log(insert);
+            $('#def').append(insert);
+        }
+    }
 }
 
 function debug() {
@@ -26,7 +69,7 @@ function debug() {
         $('#alert-array').hide();
         $('#modal_array').modal('toggle');
         $(".terminal").css('display', 'block');
-        $(".debug_variable").css('display', 'none');
+        $(".debug_variable_parent").css('display', 'none');
 
         var source_code = aceEditor.getValue();
 
@@ -48,16 +91,17 @@ function debug() {
             toastr["success"]("Successfully debuged", "Success");
             aceEditor.getSession().removeMarker(marker); // remove marker
 
-            var res_new = res.replace(/\(gdb\)/g, '');
+            res_new = res.replace(/\(gdb\)/g, '');
             res_new = res_new.replace(/\r?\n/g, '<br>');
             res_new = res_new.replace(/\r?\t/g, '@@@');
-            var res_array = res_new.split('<br>');
+            res_array = res_new.split('<br>');
             console.log(res_array);
             
             $('.debug_variable').empty();
             $("#db_result").empty();
-            $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>行番号</th></th><th>コード</th><th>変数</th></tr></thead><tbody id='abc'></tbody></table></div>");
+            $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>行番号</th><th>コード</th><th>変数</th></tr></thead><tbody id='abc'></tbody></table></div>");
 
+            line = [];
             for (var i=2; i<res_array.length; i++) {
                 if (res_array[i].indexOf('@@@') != -1) {
                     var tmp = res_array[i].split('@@@');
@@ -184,7 +228,7 @@ function debug_block() {
         $("#db_result").empty();
         $(".debug_variable").empty();
         $(".terminal").css('display', 'none');
-        $(".debug_variable").css('display', 'block');
+        $(".debug_variable_parent").css('display', 'block');
         var source_code = aceEditor.getValue();
         var data = [];
         var tmp = "";
@@ -274,6 +318,75 @@ function debug_block() {
             marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
         }
 
+        line = [];
+
+            for (var i=2; i<res_array.length; i++) {
+                if (res_array[i].indexOf('@@@') != -1) {
+                    var tmp = res_array[i].split('@@@');
+                    for (var j=0; j<tmp[0].length; j++) {
+                        if (tmp[0][j] != ' ') {
+                            tmp[0] = tmp[0].slice(j);
+                            break;
+                        }
+                    }
+                    for (var j=0; j<tmp[1].length; j++) {
+                        if (tmp[1][j] != ' ') {
+                            tmp[1] = tmp[1].slice(j);
+                            break;
+                        }
+                    }
+                    var now = i + 1;                    
+                    var temp = [];
+                    while (true) {
+                        if (res_array.length == now) break;
+                        if (res_array[now].indexOf('@@@') != -1) break;
+                        for (var k=0; k<res_array[now].length; k++) {
+                            if (res_array[now][k] != ' ') {
+                                res_array[now] = res_array[now].slice(k);
+                                break;
+                            }
+                        }
+                        if (res_array[now].indexOf(" = ") != -1) temp.push(res_array[now]);
+                        now++;
+                    }
+
+                    for (var j=0; j<temp.length; j++) {
+                        if (temp[j].indexOf(": *") != -1) {
+                            var a = temp[j].split(' = ');
+                            var b = a[0].split('@');
+                            var c = b[0].split(': *');
+                            var val =  c[1] + " = " +  a[1];
+                            if (temp.indexOf(val) != -1) temp.splice(val , 1);
+                            break;
+                        }
+                    }
+                    tmp.push(temp);
+                    line.push(tmp);
+                }
+            }
+            for (var i=1; i<line.length; i++) line[i-1][2] = line[i][2];
+            console.log(line);
+
+            var code = aceEditor.getValue();
+            var cnt = 1;
+            var count = 1;
+            for (var i=0; i<code.length; i++) { if (code[i] == '\n') cnt++; }
+            var last_code = "";
+            for (var i=0; i<code.length; i++) {
+                if (code[i] == '\n') {
+                    count++;
+                    if (count == cnt) {
+                        for (var j=i+1; j<code.length; j++) {
+                            last_code += code[j];
+                        }
+                    }
+                }
+            }
+            var buf = line[line.length-1][1];
+            line[line.length-1][1] = last_code;
+            buf = buf.split(last_code + " ");
+            line[line.length-1][2].unshift(buf[1]);
+
         $('input[name="exampleRadios"]').change(function() {
             var value = $(this).val();
             aceEditor.getSession().removeMarker(marker);
@@ -282,7 +395,7 @@ function debug_block() {
                 marker = aceEditor.getSession().addMarker(range, "myMarker", "line");
 
                 $("#db_result").empty();
-                $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>LineNo.</th><th>Sentence</th><th>Variable</th></tr></thead><tbody id='abc'></tbody></table></div>");
+                $('#db_result').append("<div><table class='table table-sm table-hover'><thead><tr><th style='text-align: center;'>行番号</th><th>コード</th><th>変数</th></tr></thead><tbody id='abc'></tbody></table></div>");
 
                 for (var i=0; i<line.length; i++) {
                     if (block[value][0] == line[i][0]) {
