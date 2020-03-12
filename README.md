@@ -18,3 +18,7 @@ $ docker run -it --rm --cap-add=SYS_PTRACE --security-opt="seccomp=unconfined" -
 
 [root@コンテナID Workspace]# node app.js
 ```
+http://localhost:3000
+もしくは
+http://IPアドレス:3000
+にアクセスしてください
