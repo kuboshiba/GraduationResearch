@@ -7,3 +7,10 @@
 - OS
   - Ubuntu 16.04
   - MacOS Catalina 10.15.x
+
+## 導入手順
+```
+$ cd ~
+$ git clone https://github.com/kuboshiba/GraduationResearch
+$ cd GraduationResearch
+```
