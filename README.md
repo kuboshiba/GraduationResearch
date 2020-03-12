@@ -13,4 +13,5 @@
 $ cd ~
 $ git clone https://github.com/kuboshiba/GraduationResearch
 $ cd GraduationResearch
+$ docker run -it --rm --cap-add=SYS_PTRACE --security-opt="seccomp=unconfined" -v $HOME/Workspace/:/root/Workspace -v /usr/local/bin/docker:/usr/local/bin/docker -v /usr/bin/docker:/usr/bin/docker -v /var/run/docker.sock:/var/run/docker.sock -w /root/Workspace -p 3000:3000 server-cent
 ```
